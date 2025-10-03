@@ -2,7 +2,13 @@ import { Box, Button, Flex, Input, InputGroup, InputRightElement, Text } from '@
 import { useState } from 'react';
 import { CommentLogo, NotificationsLogo, UnlikeLogo } from '../../assets/constants.tsx';
 
-export default function FeedPostFooter() {
+interface FeedPostFooterProps {
+    username: string;
+}
+
+export default function FeedPostFooter(
+    { username }: FeedPostFooterProps,
+) {
     const [isLiked, setIsLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(1000);
 
@@ -33,7 +39,7 @@ export default function FeedPostFooter() {
             </Text>
 
             <Text fontWeight={700} fontSize={'sm'}>
-                nathanblankson{' '}
+                {username}{' '}
                 <Text as="span" fontWeight={400}>
                     Feeling good
                 </Text>
