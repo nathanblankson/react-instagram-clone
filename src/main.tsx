@@ -3,6 +3,7 @@ import { mode } from '@chakra-ui/theme-tools'
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
 import './index.css'
+import { BrowserRouter } from 'react-router-dom';
 import App from './App.tsx'
 
 const styles = {
@@ -23,8 +24,10 @@ const theme = extendTheme({ config, styles })
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
-        <ChakraProvider theme={theme}>
-            <App/>
-        </ChakraProvider>
+        <BrowserRouter>
+            <ChakraProvider theme={theme}>
+                <App/>
+            </ChakraProvider>
+        </BrowserRouter>
     </StrictMode>,
 )
