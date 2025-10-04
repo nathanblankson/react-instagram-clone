@@ -4,10 +4,11 @@ import { CommentLogo, NotificationsLogo, UnlikeLogo } from '../../assets/constan
 
 interface FeedPostFooterProps {
     username: string;
+    isProfilePage?: boolean;
 }
 
 export default function FeedPostFooter(
-    { username }: FeedPostFooterProps,
+    { username, isProfilePage }: FeedPostFooterProps,
 ) {
     const [isLiked, setIsLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(1000);
@@ -23,7 +24,7 @@ export default function FeedPostFooter(
     }
 
     return (
-        <Box mb={10}>
+        <Box mb={10} marginTop={'auto'}>
             <Flex alignItems={'center'} gap={4} w={'full'} pt={0} mb={4} mt={4}>
                 <Box onClick={handleLike} cursor={'pointer'} fontSize={18}>
                     {!isLiked ? (<NotificationsLogo/>) : (<UnlikeLogo/>)}
@@ -38,16 +39,22 @@ export default function FeedPostFooter(
                 {likeCount} likes
             </Text>
 
-            <Text fontWeight={700} fontSize={'sm'}>
-                {username}{' '}
-                <Text as="span" fontWeight={400}>
-                    Feeling good
-                </Text>
-            </Text>
+            {
+                !isProfilePage && (
+                    <>
+                        <Text fontWeight={700} fontSize={'sm'}>
+                            {username}{' '}
+                            <Text as="span" fontWeight={400}>
+                                Feeling good
+                            </Text>
+                        </Text>
 
-            <Text fontSize={'sm'} color={'gray'}>
-                View all 1,000 comments
-            </Text>
+                        <Text fontSize={'sm'} color={'gray'}>
+                            View all 1,000 comments
+                        </Text>
+                    </>
+                )
+            }
 
             <Flex alignItems={'center'} gap={2} justifyContent={'space-between'} w={'full'}>
                 <InputGroup>
