@@ -1,4 +1,4 @@
-import { Avatar, Box, Flex, Link, Tooltip } from '@chakra-ui/react';
+import { Avatar, Box, Button, Flex, Link, Tooltip } from '@chakra-ui/react';
 import { AiFillHome } from 'react-icons/ai';
 import { BiLogOut } from 'react-icons/bi';
 import { Link as RouterLink } from 'react-router-dom';
@@ -9,6 +9,7 @@ import {
     NotificationsLogo,
     SearchLogo
 } from '../../assets/constants.tsx';
+import useLogout from '../../hooks/useLogout.tsx';
 
 export default function Sidebar() {
     const sidebarItems = [
@@ -35,6 +36,7 @@ export default function Sidebar() {
             link: '/nathanblankson'
         },
     ];
+    const { handleLogout, isLoggingOut } = useLogout();
 
     return (
         <Box
@@ -109,10 +111,8 @@ export default function Sidebar() {
                     ml={1}
                     openDelay={500}
                     display={{ base: 'block', md: 'none' }}>
-                    <Link
+                    <Flex
                         display={'flex'}
-                        to={'/auth'}
-                        as={RouterLink}
                         alignItems={'center'}
                         justifyContent={{ base: 'center', md: 'flex-start' }}
                         gap={4}
@@ -120,12 +120,17 @@ export default function Sidebar() {
                         p={2}
                         w={{ base: 10, md: 'full' }}
                         mt={'auto'}
+                        onClick={handleLogout}
                     >
                         <BiLogOut size={25}/>
-                        <Box display={{ base: 'none', md: 'block' }}>
+                        <Button
+                            display={{ base: 'none', md: 'block' }}
+                            variant={'ghost'}
+                            _hover={{ bg: 'transparent' }}
+                            isLoading={isLoggingOut}>
                             Logout
-                        </Box>
-                    </Link>
+                        </Button>
+                    </Flex>
                 </Tooltip>
             </Flex>
         </Box>
