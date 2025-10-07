@@ -1,5 +1,5 @@
 import type { AuthError } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { collection, doc, getDocs, query, setDoc, where } from 'firebase/firestore';
 import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { auth, firestore } from '../firebase/firebase.ts';
 import useAuthStore from '../store/authStore.tsx';
@@ -26,6 +26,24 @@ export default function UseSignUpWithEmailAndPassword() {
         if (!inputs.email || !inputs.password || !inputs.fullName || !inputs.username) {
             // TODO: the error is initially undefined the first time
             showToast('Error', 'Please fill in all fields', 'error');
+            return;
+        }
+
+        const usersRef = collection(firestore, 'users');
+
+        const emailQuery = query(usersRef, where('email', '==', inputs.email));
+        const emailSnapshot = await getDocs(emailQuery);
+
+        if (!emailSnapshot.empty) {
+            showToast('Error', 'Email already in use', 'error');
+            return;
+        }
+
+        const usernameQuery = query(usersRef, where('username', '==', inputs.username));
+        const usernameSnapshot = await getDocs(usernameQuery);
+
+        if (!usernameSnapshot.empty) {
+            showToast('Error', 'Username already taken', 'error');
             return;
         }
 
