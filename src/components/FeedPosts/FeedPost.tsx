@@ -1,6 +1,5 @@
 import { Box, Image } from '@chakra-ui/react';
 import FeedPostHeader from './FeedPostHeader.tsx';
-import PostFooter from './PostFooter.tsx';
 
 interface FeedPostProps {
     username: string;
@@ -19,7 +18,7 @@ export default function FeedPost(
                 <Image src={img} alt={username}/>
             </Box>
 
-            <PostFooter username={username}/>
+            {/*<PostFooter username={username}/>*/}
         </>
     )
 }
