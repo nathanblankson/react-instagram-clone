@@ -50,8 +50,8 @@ export default function UseSignUpWithEmailAndPassword() {
         try {
             const userCredential = await createUserWithEmailAndPassword(inputs.email, inputs.password);
 
-            if (!userCredential) {
-                showToast('Error', error?.message ?? 'Signup failed', 'error');
+            if (!userCredential && error) {
+                showToast('Error', error.message, 'error');
                 return;
             }
 
