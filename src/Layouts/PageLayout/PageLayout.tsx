@@ -12,10 +12,10 @@ interface PageLayoutProps {
 
 export default function PageLayout({ children }: PageLayoutProps) {
     const { pathname } = useLocation();
-    const [user, loading] = useAuthState(auth)
-    const shouldShowSidebar = pathname !== '/auth' && !!user;
-    const shouldShowNavbar = pathname !== '/auth' && !user && !loading
-    const isCheckingIsUserIfAuth = !user && loading;
+    const [authUser, loading] = useAuthState(auth)
+    const shouldShowSidebar = pathname !== '/auth' && !!authUser;
+    const shouldShowNavbar = pathname !== '/auth' && !authUser && !loading
+    const isCheckingIsUserIfAuth = !authUser && loading;
 
     if (isCheckingIsUserIfAuth) {
         return <PageLayoutSpinner/>
