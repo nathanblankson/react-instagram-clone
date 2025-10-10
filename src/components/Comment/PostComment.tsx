@@ -1,50 +1,49 @@
 import { Avatar, Flex, Skeleton, SkeletonCircle, Text } from '@chakra-ui/react';
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import useGetUserProfileById from '../../hooks/useGetUserProfileById';
+import type { Comment } from '../../store/postStore.tsx';
+import { timeAgo } from '../../utils/timeAgo.util';
 
-interface CommentProps {
-    createdAt: string;
-    username: string;
-    profilePic: string;
-    text: string;
+export interface PostCommentProps {
+    comment: Comment;
 }
 
-export default function Comment(
-    { text, createdAt, profilePic, username }: CommentProps
-) {
-    const [isLoading, setIsLoading] = useState<boolean>(false)
-
-    useEffect(() => {
-        setTimeout(() => {
-            setIsLoading(false)
-        }, 2000)
-    }, [])
+const PostComment = (
+    { comment }: PostCommentProps
+) => {
+    const { userProfile, isLoading } = useGetUserProfileById(comment.createdBy);
 
     if (isLoading) {
         return <CommentSkeleton/>;
     }
 
+    if (!userProfile) {
+        return null;
+    }
+
     return (
         <Flex gap={4}>
-            <Link to={`/${username}`}>
-                <Avatar src={profilePic} size={'sm'}/>
+            <Link to={`/${userProfile.username}`}>
+                <Avatar src={userProfile.profilePicURL} size={'sm'}/>
             </Link>
             <Flex direction={'column'}>
                 <Flex gap={2} alignItems={'center'}>
-                    <Link to={`/${username}`}>
+                    <Link to={`/${userProfile.username}`}>
                         <Text fontWeight={'bold'} fontSize={12}>
-                            {username}
+                            {userProfile.username}
                         </Text>
                     </Link>
-                    <Text fontSize={14}>{text}</Text>
+                    <Text fontSize={14}>{comment.comment}</Text>
                 </Flex>
                 <Text fontSize={12} color={'gray'}>
-                    {createdAt}
+                    {timeAgo(comment.createdAt)}
                 </Text>
             </Flex>
         </Flex>
     );
-}
+};
+
+export default PostComment;
 
 const CommentSkeleton = () => {
     return (
