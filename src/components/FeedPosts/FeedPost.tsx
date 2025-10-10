@@ -1,24 +1,27 @@
 import { Box, Image } from '@chakra-ui/react';
-import FeedPostHeader from './FeedPostHeader.tsx';
+import useGetUserProfileById from '../../hooks/useGetUserProfileById';
+import type { Post } from '../../store/postStore.tsx';
+import PostFooter from './PostFooter';
+import PostHeader from './PostHeader.tsx';
 
-interface FeedPostProps {
-    username: string;
-    avatar: string;
-    img: string;
+export interface FeedPostProps {
+    post: Post;
 }
 
-export default function FeedPost(
-    { username, avatar, img }: FeedPostProps,
-) {
+const FeedPost = (
+    { post }: FeedPostProps
+) => {
+    const { userProfile } = useGetUserProfileById(post.createdBy);
+
     return (
         <>
-            <FeedPostHeader username={username} avatar={avatar}/>
-
+            {userProfile && <PostHeader post={post} creatorProfile={userProfile}/>}
             <Box my={2} borderRadius={4} overflow={'hidden'}>
-                <Image src={img} alt={username}/>
+                <Image src={post.imageURL} alt={'FEED POST IMG'}/>
             </Box>
-
-            {/*<PostFooter username={username}/>*/}
+            {userProfile && <PostFooter post={post} creatorProfile={userProfile}/>}
         </>
-    )
-}
+    );
+};
+
+export default FeedPost;
