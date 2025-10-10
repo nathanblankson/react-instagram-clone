@@ -21,7 +21,8 @@ import useDeletePost from '../../hooks/useDeletePost.tsx';
 import useAuthStore from '../../store/authStore';
 import { type Post } from '../../store/postStore';
 import useUserProfileStore from '../../store/userProfileStore';
-import Comment from '../Comment/Comment.tsx';
+import Caption from '../Comment/Caption.tsx';
+import PostComment from '../Comment/PostComment.tsx';
 import PostFooter from '../FeedPosts/PostFooter.tsx';
 
 export interface ProfilePostProps {
@@ -135,26 +136,13 @@ const ProfilePost = (
                                 <Divider my={4} bg={'gray.500'}/>
 
                                 <VStack w="full" alignItems={'start'} maxH={'350px'} overflowY={'auto'}>
-                                    {/* CAPTION */}
+                                    {/* Caption */}
+                                    {post.caption && <Caption post={post}/>}
 
-                                    <Comment
-                                        createdAt="1d ago"
-                                        username="nathanblankson"
-                                        profilePic="/profilepic.png"
-                                        text="Great post!"
-                                    />
-                                    <Comment
-                                        createdAt="12h ago"
-                                        username="abrahmov"
-                                        profilePic="https://bit.ly/dan-abramov"
-                                        text="Nice pic!"
-                                    />
-                                    <Comment
-                                        createdAt="3h ago"
-                                        username="kentdodds"
-                                        profilePic="https://bit.ly/kent-c-dodds"
-                                        text="Awesome!"
-                                    />
+                                    {/* Comments */}
+                                    {post.comments.map((comment, index) => (
+                                        <PostComment key={index} comment={comment}/>
+                                    ))}
                                 </VStack>
                                 <Divider my={4} bg={'gray.8000'}/>
 
