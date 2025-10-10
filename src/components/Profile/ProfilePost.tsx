@@ -22,7 +22,7 @@ import useAuthStore from '../../store/authStore';
 import { type Post } from '../../store/postStore';
 import useUserProfileStore from '../../store/userProfileStore';
 import Comment from '../Comment/Comment.tsx';
-import FeedPostFooter from '../FeedPosts/FeedPostFooter.tsx';
+import PostFooter from '../FeedPosts/PostFooter.tsx';
 
 export interface ProfilePostProps {
     post: Post;
@@ -158,7 +158,7 @@ const ProfilePost = (
                                 </VStack>
                                 <Divider my={4} bg={'gray.8000'}/>
 
-                                <FeedPostFooter username="nathanblankson" isProfilePage={true}/>
+                                <PostFooter username="nathanblankson" isProfilePage={true}/>
                             </Flex>
                         </Flex>
                     </ModalBody>

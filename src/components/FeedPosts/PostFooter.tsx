@@ -2,13 +2,13 @@ import { Box, Button, Flex, Input, InputGroup, InputRightElement, Text } from '@
 import { useState } from 'react';
 import { CommentLogo, NotificationsLogo, UnlikeLogo } from '../../assets/constants.tsx';
 
-interface FeedPostFooterProps {
+interface PostFooterProps {
     username: string;
     isProfilePage?: boolean;
 }
 
-export default function FeedPostFooter(
-    { username, isProfilePage }: FeedPostFooterProps,
+export default function PostFooter(
+    { username, isProfilePage }: PostFooterProps,
 ) {
     const [isLiked, setIsLiked] = useState(false);
     const [likeCount, setLikeCount] = useState(1000);
