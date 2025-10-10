@@ -1,19 +1,19 @@
 import { Avatar, AvatarGroup, Button, Flex, Text, useDisclosure, VStack } from '@chakra-ui/react';
-import { useState } from 'react';
+import useFollowUser from '../../hooks/useFollowUser.tsx';
 import useAuthStore from '../../store/authStore.tsx';
 import useUserProfileStore from '../../store/userProfileStore.tsx';
 import EditProfile from './EditProfile.tsx';
 
 export default function ProfileHeader() {
-    const [isFollowing] = useState(false);
-    const authUser = useAuthStore(state => state.authUser);
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const authUser = useAuthStore(state => state.authUser);
     const { userProfile } = useUserProfileStore();
 
     if (!userProfile) {
         return null; // TODO: NBSon - loading spinner, or some placeholder
     }
 
+    const { isFollowing, isUpdating, handleFollowUser } = useFollowUser(userProfile.uid);
     const visitingOwnProfileAndAuth = authUser && authUser.username === userProfile.username;
     const visitingAnotherProfileAndAuth = authUser && authUser.username !== userProfile.username;
 
@@ -58,7 +58,8 @@ export default function ProfileHeader() {
                                 color={'white'}
                                 _hover={{ bg: 'blue.600' }}
                                 size={{ base: 'xs', md: 'sm' }}
-                            >
+                                onClick={handleFollowUser}
+                                isLoading={isUpdating}>
                                 {isFollowing ? 'Unfollow' : 'Follow'}
                             </Button>
                         </Flex>
