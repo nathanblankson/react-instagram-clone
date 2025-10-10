@@ -2,7 +2,7 @@ import type { AuthError } from 'firebase/auth';
 import { doc, getDoc } from 'firebase/firestore';
 import { useSignInWithEmailAndPassword } from 'react-firebase-hooks/auth';
 import { auth, firestore } from '../firebase/firebase';
-import useAuthStore from '../store/authStore';
+import useAuthStore, { type User } from '../store/authStore';
 import useShowToast from './useShowToast';
 
 export interface LoginProps {
@@ -13,7 +13,7 @@ export interface LoginProps {
 const useLogin = () => {
     const showToast = useShowToast();
     const [signInWithEmailAndPassword, , loading, error] = useSignInWithEmailAndPassword(auth);
-    const loginUser = useAuthStore((state: any) => state.login);
+    const loginUser = useAuthStore((state) => state.login);
 
     const login = async (inputs: LoginProps) => {
         if (!inputs.email || !inputs.password) {
@@ -28,7 +28,7 @@ const useLogin = () => {
                 const docSnap = await getDoc(docRef);
 
                 localStorage.setItem('user-info', JSON.stringify(docSnap.data()));
-                loginUser(docSnap.data());
+                loginUser(docSnap.data() as User);
             }
         } catch (error) {
             if (error instanceof Error) {

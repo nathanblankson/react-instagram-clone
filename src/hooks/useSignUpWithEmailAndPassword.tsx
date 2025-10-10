@@ -20,7 +20,7 @@ export default function UseSignUpWithEmailAndPassword() {
         error,
     ] = useCreateUserWithEmailAndPassword(auth);
     const showToast = useShowToast();
-    const loginUser = useAuthStore((state: any) => state.login);
+    const loginUser = useAuthStore((state) => state.login);
 
     const signup = async (inputs: SignupProps) => {
         if (!inputs.email || !inputs.password || !inputs.fullName || !inputs.username) {
