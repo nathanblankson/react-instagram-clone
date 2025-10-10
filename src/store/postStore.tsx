@@ -1,8 +1,9 @@
 import { create } from 'zustand';
 
 export interface Comment {
-    id: string;
-    text: string;
+    // TODO: NBSon - do we need id for comment?
+    postId: string;
+    comment: string;
     createdAt: number;
     createdBy: string;
 }
