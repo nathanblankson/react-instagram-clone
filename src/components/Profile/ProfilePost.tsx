@@ -12,24 +12,34 @@ import {
     ModalOverlay,
     Text,
     useDisclosure,
-    VStack
+    VStack,
 } from '@chakra-ui/react';
 import { AiFillHeart } from 'react-icons/ai';
-import { FaComment } from 'react-icons/fa6';
+import { FaComment } from 'react-icons/fa';
 import { MdDelete } from 'react-icons/md';
+import useDeletePost from '../../hooks/useDeletePost.tsx';
+import useAuthStore from '../../store/authStore';
+import { type Post } from '../../store/postStore';
+import useUserProfileStore from '../../store/userProfileStore';
 import Comment from '../Comment/Comment.tsx';
 import FeedPostFooter from '../FeedPosts/FeedPostFooter.tsx';
 
-interface ProfilePostProps {
-    img: string;
-    username: string;
-    avatar: string;
+export interface ProfilePostProps {
+    post: Post;
 }
 
-export default function ProfilePost(
-    { img, username, avatar }: ProfilePostProps
-) {
+const ProfilePost = (
+    { post }: ProfilePostProps
+) => {
+    const userProfile = useUserProfileStore((state) => state.userProfile);
+
+    if (!userProfile) {
+        return null;
+    }
+
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const authUser = useAuthStore((state) => state.authUser);
+    const { isDeleting, handleDeletePost } = useDeletePost(post.id);
 
     return (
         <>
@@ -60,20 +70,20 @@ export default function ProfilePost(
                         <Flex>
                             <AiFillHeart size={20}/>
                             <Text fontWeight={'bold'} ml={2}>
-                                7
+                                {post.likes.length}
                             </Text>
                         </Flex>
 
                         <Flex>
                             <FaComment size={20}/>
                             <Text fontWeight={'bold'} ml={2}>
-                                10
+                                {post.comments.length}
                             </Text>
                         </Flex>
                     </Flex>
                 </Flex>
 
-                <Image src={img} alt="profile post" w={'100%'} h={'100%'} objectFit={'cover'}/>
+                <Image src={post.imageURL} alt="profile post" w={'100%'} h={'100%'} objectFit={'cover'}/>
             </GridItem>
 
             <Modal isOpen={isOpen} onClose={onClose} isCentered={true} size={{ base: '3xl', md: '5xl' }}>
@@ -97,29 +107,31 @@ export default function ProfilePost(
                                 justifyContent={'center'}
                                 alignItems={'center'}
                             >
-                                <Image src={img} alt="profile post"/>
+                                <Image src={post.imageURL} alt="profile post"/>
                             </Flex>
-
                             <Flex flex={1} flexDir={'column'} px={10} display={{ base: 'none', md: 'flex' }}>
                                 <Flex alignItems={'center'} justifyContent={'space-between'}>
                                     <Flex alignItems={'center'} gap={4}>
-                                        <Avatar src={avatar} size={'sm'} name="As a Programmer"/>
+                                        <Avatar src={userProfile.profilePicURL} size={'sm'} name="As a Programmer"/>
                                         <Text fontWeight={'bold'} fontSize={12}>
-                                            {username}
+                                            {userProfile.username}
                                         </Text>
                                     </Flex>
 
-                                    <Button
-                                        size={'sm'}
-                                        bg={'transparent'}
-                                        _hover={{ bg: 'whiteAlpha.300', color: 'red.600' }}
-                                        borderRadius={4}
-                                        p={1}
-                                    >
-                                        <MdDelete size={20} cursor="pointer"/>
-                                    </Button>
+                                    {authUser?.uid === userProfile.uid && (
+                                        <Button
+                                            size={'sm'}
+                                            bg={'transparent'}
+                                            _hover={{ bg: 'whiteAlpha.300', color: 'red.600' }}
+                                            borderRadius={4}
+                                            p={1}
+                                            onClick={handleDeletePost}
+                                            isLoading={isDeleting}
+                                        >
+                                            <MdDelete size={20} cursor="pointer"/>
+                                        </Button>
+                                    )}
                                 </Flex>
-
                                 <Divider my={4} bg={'gray.500'}/>
 
                                 <VStack w="full" alignItems={'start'} maxH={'350px'} overflowY={'auto'}>
@@ -144,15 +156,16 @@ export default function ProfilePost(
                                         text="Awesome!"
                                     />
                                 </VStack>
+                                <Divider my={4} bg={'gray.8000'}/>
 
-                                <Divider my={4} bg={'gray.800'}/>
-
-                                <FeedPostFooter username={username} isProfilePage={true}/>
+                                <FeedPostFooter username="nathanblankson" isProfilePage={true}/>
                             </Flex>
                         </Flex>
                     </ModalBody>
                 </ModalContent>
             </Modal>
         </>
-    )
-}
+    );
+};
+
+export default ProfilePost;
