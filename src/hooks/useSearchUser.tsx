@@ -4,6 +4,7 @@ import { firestore } from '../firebase/firebase';
 import type { User } from '../store/authStore.tsx';
 import useShowToast from './useShowToast';
 
+// TODO: NBSon - expand on this to allow for matching users by username and returning a list of users
 const useSearchUser = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [user, setUser] = useState<User | null>(null);
