@@ -35,6 +35,7 @@ const useLikePost = (post: Post) => {
 
             setIsLiked(!isLiked);
 
+            // Optimistically update likes count
             isLiked ? setLikes(likes - 1) : setLikes(likes + 1);
         } catch (error) {
             if (error instanceof Error) {
