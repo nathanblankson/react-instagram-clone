@@ -1,8 +1,8 @@
 import type { AuthError } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
 import { useSignInWithGoogle } from 'react-firebase-hooks/auth';
 import { auth, firestore } from '../firebase/firebase';
-import useAuthStore from '../store/authStore';
+import useAuthStore, { type User } from '../store/authStore';
 import useShowToast from './useShowToast';
 
 const useGoogleAuth = () => {
@@ -20,22 +20,34 @@ const useGoogleAuth = () => {
             }
 
             if (userCredential) {
-                const userDoc = {
-                    uid: userCredential.user.uid,
-                    fullName: userCredential.user.displayName || `Instagram User ${Math.floor(Math.random() * 1000)}`,
-                    username: userCredential.user.email!.split('@')[0], // TODO: NBSon - investigate why this can be null
-                    email: userCredential.user.email!,
-                    bio: '',
-                    profilePicURL: userCredential.user.photoURL || '',
-                    followers: [],
-                    following: [],
-                    posts: [],
-                    createdAt: Date.now(),
-                }
+                const userRef = doc(firestore, 'users', userCredential.user.uid);
+                const userSnapshot = await getDoc(userRef);
 
-                await setDoc(doc(firestore, 'users', userCredential.user.uid), userDoc);
-                localStorage.setItem('user-info', JSON.stringify(userDoc));
-                loginUser(userDoc);
+                // TODO: NBSon - investigate how linking accounts works
+                if (userSnapshot.exists()) {
+                    // Login existing user
+                    const userDoc = userSnapshot.data();
+                    localStorage.setItem('user-info', JSON.stringify(userDoc));
+                    loginUser(userDoc as User);
+                } else {
+                    // Register new user
+                    const userDoc = {
+                        uid: userCredential.user.uid,
+                        fullName: userCredential.user.displayName || `Instagram User ${Math.floor(Math.random() * 1000)}`,
+                        username: userCredential.user.email!.split('@')[0], // TODO: NBSon - investigate why this can be null
+                        email: userCredential.user.email!,
+                        bio: '',
+                        profilePicURL: userCredential.user.photoURL || '',
+                        followers: [],
+                        following: [],
+                        posts: [],
+                        createdAt: Date.now(),
+                    }
+
+                    await setDoc(doc(firestore, 'users', userCredential.user.uid), userDoc);
+                    localStorage.setItem('user-info', JSON.stringify(userDoc));
+                    loginUser(userDoc);
+                }
             }
         } catch (error) {
             if (error instanceof Error) {
