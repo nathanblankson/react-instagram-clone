@@ -1,7 +1,9 @@
-import { Avatar, Flex, Link, Text } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
+import { Avatar, Button, Flex, Text } from '@chakra-ui/react';
+import useLogout from '../../hooks/useLogout.tsx';
 
 export default function SuggestedUsersHeader() {
+    const { handleLogout, isLoggingOut } = useLogout();
+
     return (
         <Flex justifyContent={'space-between'} alignItems={'center'} w={'full'}>
             <Flex alignItems={'center'} gap={2}>
@@ -10,16 +12,18 @@ export default function SuggestedUsersHeader() {
                     nathanblankson
                 </Text>
             </Flex>
-            <Link
-                as={RouterLink}
-                to={'/auth'}
+            <Button
+                size={'xs'}
+                background={'transparent'}
+                _hover={{ background: 'transparent' }}
                 fontSize={14}
                 fontWeight={'medium'}
                 color={'blue.500'}
                 cursor={'pointer'}
-                style={{ textDecoration: 'none' }}>
+                isLoading={isLoggingOut}
+                onClick={handleLogout}>
                 Log out
-            </Link>
+            </Button>
         </Flex>
     )
 }
