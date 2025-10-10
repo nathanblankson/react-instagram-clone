@@ -1,5 +1,4 @@
 import { Box, Flex, Link, Text, VStack } from '@chakra-ui/react';
-import SuggestedUser from './SuggestedUser.tsx';
 import SuggestedUsersHeader from './SuggestedUsersHeader.tsx';
 
 export default function SuggestedUsers() {
@@ -16,9 +15,10 @@ export default function SuggestedUsers() {
                 </Text>
             </Flex>
 
-            <SuggestedUser name="Dan Abrahmov" followers={1392} avatar="https://bit.ly/dan-abramov"/>
-            <SuggestedUser name="Sophie Alpert" followers={1234} avatar="https://bit.ly/sophie-alpert"/>
-            <SuggestedUser name="Sebastian Markbåge" followers={1100} avatar="https://bit.ly/sebastian-markbage"/>
+            {/* TODO: Commented out for now */}
+            {/*<SuggestedUser id="1" name="Dan Abrahmov" followers={1392} avatar="https://bit.ly/dan-abramov"/>*/}
+            {/*<SuggestedUser id="2" name="Sophie Alpert" followers={1234} avatar="https://bit.ly/sophie-alpert"/>*/}
+            {/*<SuggestedUser id="3" name="Sebastian Markbåge" followers={1100} avatar="https://bit.ly/sebastian-markbage"/>*/}
 
             <Box
                 fontSize={12}

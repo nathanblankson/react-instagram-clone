@@ -22,7 +22,7 @@ import SuggestedUser from '../SuggestedUsers/SuggestedUser';
 const Search = () => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const searchRef = useRef<HTMLInputElement>(null);
-    const { user, isLoading, getUserProfile } = useSearchUser();
+    const { user, isLoading, getUserProfile, setUser } = useSearchUser();
 
     const handleSearchUser = (e: any) => {
         e.preventDefault(); // Prevent page reload on form submit
@@ -79,7 +79,7 @@ const Search = () => {
                         </form>
                         {
                             user &&
-                            <SuggestedUser name={user.username} avatar={user.profilePicURL} followers={user.followers.length}/>
+                            <SuggestedUser user={user} setUser={setUser}/>
                         }
                     </ModalBody>
                 </ModalContent>
