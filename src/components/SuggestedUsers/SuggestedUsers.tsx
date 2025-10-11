@@ -1,10 +1,12 @@
 import { Box, Flex, Link, Text, VStack } from '@chakra-ui/react';
 import useGetSuggestedUsers from '../../hooks/useGetSuggestedUsers.tsx';
+import useSearchUser from '../../hooks/useSearchUser.tsx';
 import SuggestedUser from './SuggestedUser.tsx';
 import SuggestedUsersHeader from './SuggestedUsersHeader.tsx';
 
 export default function SuggestedUsers() {
     const { isLoading, suggestedUsers } = useGetSuggestedUsers();
+    const { setUser } = useSearchUser();
 
     if (isLoading) {
         return null;
@@ -27,7 +29,7 @@ export default function SuggestedUsers() {
 
             {/* TODO: look at how we can improve follow here */}
             {suggestedUsers.map((user) => (
-                <SuggestedUser user={user} key={user.id}/>
+                <SuggestedUser user={user} key={user.id} setUser={setUser}/>
             ))}
 
             <Box
