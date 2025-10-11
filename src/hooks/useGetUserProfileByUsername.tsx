@@ -1,6 +1,7 @@
 import { collection, getDocs, query, where } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 import { firestore } from '../firebase/firebase';
+import type { User } from '../store/authStore.tsx';
 import useUserProfileStore from '../store/userProfileStore';
 import useShowToast from './useShowToast';
 
@@ -21,13 +22,11 @@ const useGetUserProfileByUsername = (username: string) => {
                     return setUserProfile(null);
                 }
 
-                let userDoc;
+                let userDoc = usernameQuerySnapshot.docs.at(0)?.data() as User;
 
-                usernameQuerySnapshot.forEach((doc) => {
-                    userDoc = doc.data();
-                });
-
-                setUserProfile(userDoc);
+                if (userDoc) {
+                    setUserProfile(userDoc);
+                }
             } catch (error) {
                 if (error instanceof Error) {
                     showToast('Error', error.message, 'error');

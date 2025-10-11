@@ -3,7 +3,7 @@ import type { User } from './authStore.tsx';
 
 export interface UserProfileState {
     userProfile: User | null;
-    setUserProfile: (profile: User) => void;
+    setUserProfile: (profile: User | null) => void;
     addPost: (post: { id: string }) => void;
     deletePost: (postId: string) => void;
 }
