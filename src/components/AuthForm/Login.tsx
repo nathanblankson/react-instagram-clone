@@ -3,6 +3,7 @@ import { Button, Input, InputGroup, InputRightElement } from '@chakra-ui/react';
 import { useState } from 'react';
 import useLogin from '../../hooks/useLogin.tsx';
 
+// TODO: look at using keyboard to submit form
 export default function Login() {
     const [loginForm, setLoginForm] = useState({
         email: '',
