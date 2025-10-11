@@ -8,6 +8,8 @@ import usePostStore, { type BasePost } from '../store/postStore.tsx';
 import useUserProfileStore from '../store/userProfileStore';
 import useShowToast from './useShowToast';
 
+// TODO: when I create a post on the home page, it will show my own post, then when I refresh, it will disappear.
+// we should not show our own post on the home page feed.
 const useCreatePost = () => {
     const showToast = useShowToast();
     const [isLoading, setIsLoading] = useState(false);
